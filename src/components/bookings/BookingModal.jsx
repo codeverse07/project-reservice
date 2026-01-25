@@ -91,7 +91,7 @@ const BookingModal = ({ isOpen, onClose, service, onConfirm }) => {
                         <Button
                             type="submit"
                             disabled={isLoading}
-                            className="flex-1 justify-center shadow-lg shadow-blue-500/20"
+                            className="flex-1 justify-center shadow-lg shadow-blue-500/20 bg-blue-600 hover:bg-blue-700"
                         >
                             {isLoading ? (
                                 <>

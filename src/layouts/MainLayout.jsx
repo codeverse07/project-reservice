@@ -6,7 +6,9 @@ import Footer from '../components/layout/Footer';
 const MainLayout = () => {
     return (
         <div className="min-h-screen flex flex-col font-sans text-slate-900 bg-slate-50">
-            <Navbar />
+            <div className="hidden md:block">
+                <Navbar />
+            </div>
 
             <main className="grow">
                 <Outlet />

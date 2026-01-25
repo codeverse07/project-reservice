@@ -3,30 +3,30 @@ import { Wrench, Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucid
 
 const Footer = () => {
     return (
-        <footer className="bg-slate-900 text-slate-300 pt-16 pb-8 relative z-20">
+        <footer className="md:bg-slate-900 bg-white md:text-slate-300 text-slate-600 pt-16 pb-8 relative z-20 transition-colors duration-300 border-t border-rose-100 md:border-none">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Brand */}
                     <div>
                         <div className="flex items-center gap-2 mb-6">
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 md:bg-blue-600 bg-rose-600 rounded-lg flex items-center justify-center">
                                 <Wrench className="w-5 h-5 text-white" />
                             </div>
-                            <span className="text-xl font-bold text-white">
+                            <span className="text-xl font-bold md:text-white text-slate-900">
                                 Reservice
                             </span>
                         </div>
-                        <p className="text-slate-400 mb-6 leading-relaxed">
+                        <p className="md:text-slate-400 text-slate-500 mb-6 leading-relaxed">
                             Professional home repair and transport services at your doorstep. Fast, reliable, and guaranteed quality.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <a href="#" className="w-10 h-10 rounded-full md:bg-slate-800 bg-rose-50 text-rose-600 md:text-slate-400 flex items-center justify-center md:hover:bg-blue-600 hover:bg-rose-600 hover:text-white transition-all">
                                 <Facebook className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <a href="#" className="w-10 h-10 rounded-full md:bg-slate-800 bg-rose-50 text-rose-600 md:text-slate-400 flex items-center justify-center md:hover:bg-blue-600 hover:bg-rose-600 hover:text-white transition-all">
                                 <Twitter className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors">
+                            <a href="#" className="w-10 h-10 rounded-full md:bg-slate-800 bg-rose-50 text-rose-600 md:text-slate-400 flex items-center justify-center md:hover:bg-blue-600 hover:bg-rose-600 hover:text-white transition-all">
                                 <Instagram className="w-5 h-5" />
                             </a>
                         </div>
@@ -34,49 +34,49 @@ const Footer = () => {
 
                     {/* Quick Links */}
                     <div>
-                        <h3 className="text-white font-semibold text-lg mb-6">Quick Links</h3>
+                        <h3 className="md:text-white text-slate-900 font-semibold text-lg mb-6">Quick Links</h3>
                         <ul className="space-y-4">
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">About Us</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Our Services</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Pricing</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Careers</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Contact</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">About Us</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Our Services</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Pricing</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Careers</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Contact</a></li>
                         </ul>
                     </div>
 
                     {/* Services */}
                     <div>
-                        <h3 className="text-white font-semibold text-lg mb-6">Services</h3>
+                        <h3 className="md:text-white text-slate-900 font-semibold text-lg mb-6">Services</h3>
                         <ul className="space-y-4">
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Carpentry</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Electrical</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Home Appliances</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Plumbing</a></li>
-                            <li><a href="#" className="hover:text-blue-500 transition-colors">Transport</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Carpentry</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Electrical</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Home Appliances</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Plumbing</a></li>
+                            <li><a href="#" className="md:hover:text-blue-500 hover:text-rose-600 transition-colors">Transport</a></li>
                         </ul>
                     </div>
 
                     {/* Contact */}
                     <div>
-                        <h3 className="text-white font-semibold text-lg mb-6">Contact Us</h3>
+                        <h3 className="md:text-white text-slate-900 font-semibold text-lg mb-6">Contact Us</h3>
                         <ul className="space-y-4">
                             <li className="flex items-start gap-3">
-                                <MapPin className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-                                <span>123 Repair Street, Tech City, New York, NY 10001</span>
+                                <MapPin className="w-5 h-5 md:text-blue-500 text-rose-600 shrink-0 mt-0.5" />
+                                <span>123, Green Park, New Delhi, India 110016</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Phone className="w-5 h-5 text-blue-500 shrink-0" />
-                                <span>+1 (555) 123-4567</span>
+                                <Phone className="w-5 h-5 md:text-blue-500 text-rose-600 shrink-0" />
+                                <span>+91 98765 43210</span>
                             </li>
                             <li className="flex items-center gap-3">
-                                <Mail className="w-5 h-5 text-blue-500 shrink-0" />
+                                <Mail className="w-5 h-5 md:text-blue-500 text-rose-600 shrink-0" />
                                 <span>support@reservice.com</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+                <div className="border-t md:border-slate-800 border-rose-100 pt-8 text-center md:text-slate-500 text-slate-400 text-sm">
                     <p>© {new Date().getFullYear()} Reservice. All rights reserved.</p>
                 </div>
             </div>

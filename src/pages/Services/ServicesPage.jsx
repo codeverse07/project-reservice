@@ -7,6 +7,9 @@ import { categories, services } from '../../data/mockData';
 import ServiceCard from '../../components/common/ServiceCard';
 import Button from '../../components/common/Button';
 import { useBookings } from '../../context/BookingContext';
+import MobileHeader from '../../components/mobile/MobileHeader';
+import MobileBottomNav from '../../components/mobile/MobileBottomNav';
+import MobileServiceDetail from '../../pages/Services/MobileServiceDetail';
 import BookingModal from '../../components/bookings/BookingModal';
 
 const ServicesPage = () => {
@@ -16,6 +19,7 @@ const ServicesPage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedService, setSelectedService] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMobileDetailOpen, setIsMobileDetailOpen] = useState(false);
     const containerRef = useRef(null);
 
     useGSAP(() => {
@@ -36,7 +40,17 @@ const ServicesPage = () => {
 
     const handleBookClick = (service) => {
         setSelectedService(service);
-        setIsModalOpen(true);
+        // On mobile we might want to go straight to booking or details? 
+        // User asked for "cards like this" implying the detail view.
+        // Let's open the Mobile Detail view for mobile, and Modal for desktop maybe?
+        // Or simpler: Open Mobile Detail view everywhere since it's responsive? 
+        // Actually MobileServiceDetail has a "Add to Cart" that could lead to booking.
+        // Let's assume on Mobile we open MobileServiceDetail.
+        if (window.innerWidth < 768) {
+             setIsMobileDetailOpen(true);
+        } else {
+             setIsModalOpen(true);
+        }
     };
 
     const handleConfirmBooking = (bookingData) => {
@@ -46,27 +60,32 @@ const ServicesPage = () => {
     };
 
     return (
-        <div ref={containerRef} className="relative min-h-screen bg-slate-50 selection:bg-blue-100 overflow-hidden">
+        <div ref={containerRef} className="relative min-h-screen bg-slate-50 selection:bg-blue-100 overflow-hidden pb-20 md:pb-0">
+             {/* Mobile Header */}
+             <div className="md:hidden">
+                <MobileHeader />
+             </div>
+
             {/* Background Decorations */}
             <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px]" />
-            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-rose-500/10 md:bg-blue-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-slate-300/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3" />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-12">
                 {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 animate-item">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 md:mb-10 animate-item">
                     <div>
-                        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">Browse Services</h1>
-                        <p className="text-slate-500 mt-2 text-lg">Connect with {filteredServices.length} top-rated professionals in your area.</p>
+                        <h1 className="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Browse Services</h1>
+                        <p className="text-slate-500 mt-2 text-sm md:text-lg">Connect with {filteredServices.length} top-rated professionals in your area.</p>
                     </div>
 
                     <div className="flex gap-3 w-full md:w-auto">
                         <div className="relative group w-full md:w-auto">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-rose-500 md:group-focus-within:text-blue-500 transition-colors" />
                             <input
                                 type="text"
                                 placeholder="Search for 'Electrician'..."
-                                className="pl-12 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all w-full md:w-80 shadow-sm"
+                                className="pl-12 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 md:focus:ring-blue-500/20 focus:border-rose-500 md:focus:border-blue-500 transition-all w-full md:w-80 shadow-sm"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -80,14 +99,14 @@ const ServicesPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     {/* Sidebar Filters (Sticky) */}
-                    <div className="lg:col-span-3 space-y-8 h-fit lg:sticky lg:top-24 animate-item">
+                    <div className="lg:col-span-3 space-y-8 h-fit lg:sticky lg:top-24 animate-item hidden lg:block">
                         {/* Categories */}
                         <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                             <h3 className="font-bold text-slate-900 mb-5">Categories</h3>
                             <div className="space-y-3">
                                 <label className="flex items-center gap-3 cursor-pointer group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedCategory === 'all' ? 'border-blue-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
-                                        {selectedCategory === 'all' && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+                                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedCategory === 'all' ? 'border-rose-600 md:border-blue-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
+                                        {selectedCategory === 'all' && <div className="w-2.5 h-2.5 rounded-full bg-rose-600 md:bg-blue-600" />}
                                     </div>
                                     <input
                                         type="radio"
@@ -100,8 +119,8 @@ const ServicesPage = () => {
                                 </label>
                                 {categories.map((cat) => (
                                     <label key={cat.id} className="flex items-center gap-3 cursor-pointer group p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors">
-                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedCategory === cat.id ? 'border-blue-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
-                                            {selectedCategory === cat.id && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedCategory === cat.id ? 'border-rose-600 md:border-blue-600' : 'border-slate-300 group-hover:border-slate-400'}`}>
+                                            {selectedCategory === cat.id && <div className="w-2.5 h-2.5 rounded-full bg-rose-600 md:bg-blue-600" />}
                                         </div>
                                         <input
                                             type="radio"
@@ -138,11 +157,30 @@ const ServicesPage = () => {
                             </div>
                         </div>
                     </div>
+                    
+                    {/* Mobile Category Pills */}
+                    <div className="lg:hidden animate-item mb-4 overflow-x-auto pb-2 -mx-4 px-4 flex gap-2 hide-scrollbar">
+                         <button 
+                            onClick={() => setSelectedCategory('all')}
+                            className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${selectedCategory === 'all' ? 'bg-rose-600 text-white' : 'bg-white text-slate-600 border border-slate-200'}`}
+                         >
+                            All
+                         </button>
+                         {categories.map(cat => (
+                             <button 
+                                key={cat.id}
+                                onClick={() => setSelectedCategory(cat.id)}
+                                className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-colors ${selectedCategory === cat.id ? 'bg-rose-600 text-white' : 'bg-white text-slate-600 border border-slate-200'}`}
+                             >
+                                {cat.name}
+                             </button>
+                         ))}
+                    </div>
 
                     {/* Grid */}
                     <div className="lg:col-span-9 animate-item">
                         {filteredServices.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <div className="filter-services-grid grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6">
                                 {filteredServices.map(service => (
                                     <ServiceCard key={service.id} service={service} onBook={handleBookClick} />
                                 ))}
@@ -168,12 +206,24 @@ const ServicesPage = () => {
                 </div>
             </div>
 
+             {/* Mobile Bottom Nav */}
+             <div className="md:hidden">
+                <MobileBottomNav />
+             </div>
+
             <BookingModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 service={selectedService}
                 onConfirm={handleConfirmBooking}
             />
+            
+            {isMobileDetailOpen && selectedService && (
+                <MobileServiceDetail 
+                    serviceId={selectedService.id}
+                    onClose={() => setIsMobileDetailOpen(false)}
+                />
+            )}
         </div>
     );
 };

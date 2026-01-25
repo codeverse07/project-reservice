@@ -7,6 +7,7 @@ import LoginPage from './pages/Auth/LoginPage';
 import RegisterPage from './pages/Auth/RegisterPage';
 import ServicesPage from './pages/Services/ServicesPage';
 import BookingsPage from './pages/Bookings/BookingsPage';
+import ProfilePage from './pages/Profile/ProfilePage';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="services" element={<ServicesPage />} />
           </Route>
           <Route path="/bookings" element={<BookingsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Routes>
