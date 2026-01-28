@@ -76,6 +76,14 @@ const TextType = ({
         }
     }, [showCursor, cursorBlinkDuration]);
 
+    const onSentenceCompleteRef = useRef(onSentenceComplete);
+
+    useEffect(() => {
+        onSentenceCompleteRef.current = onSentenceComplete;
+    }, [onSentenceComplete]);
+
+    // ... (rest of logic using onSentenceCompleteRef.current)
+
     useEffect(() => {
         if (!isVisible) return;
 
@@ -92,8 +100,8 @@ const TextType = ({
                         return;
                     }
 
-                    if (onSentenceComplete) {
-                        onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
+                    if (onSentenceCompleteRef.current) {
+                        onSentenceCompleteRef.current(textArray[currentTextIndex], currentTextIndex);
                     }
 
                     setCurrentTextIndex(prev => (prev + 1) % textArray.length);
@@ -115,8 +123,8 @@ const TextType = ({
                     );
                 } else if (textArray.length >= 1) {
                     if (!loop && currentTextIndex === textArray.length - 1) {
-                        if (onSentenceComplete) {
-                            onSentenceComplete(textArray[currentTextIndex], currentTextIndex);
+                        if (onSentenceCompleteRef.current) {
+                            onSentenceCompleteRef.current(textArray[currentTextIndex], currentTextIndex);
                         }
                         return;
                     }
@@ -148,8 +156,7 @@ const TextType = ({
         initialDelay,
         isVisible,
         reverseMode,
-        variableSpeed,
-        onSentenceComplete
+        variableSpeed
     ]);
 
     const shouldHideCursor =
@@ -159,16 +166,18 @@ const TextType = ({
         Component,
         {
             ref: containerRef,
-            className: `inline-block whitespace-pre-wrap tracking-tight ${className}`,
+            className: `${className}`,
+            'aria-label': textArray[currentTextIndex],
             ...props
         },
-        <span className="inline" style={{ color: getCurrentTextColor() || 'inherit' }}>
+        <span className="inline" aria-hidden="true" style={{ color: getCurrentTextColor() || 'inherit' }}>
             {displayedText}
         </span>,
         showCursor && (
             <span
                 ref={cursorRef}
                 className={`ml-1 inline-block opacity-100 ${shouldHideCursor ? 'hidden' : ''} ${cursorClassName}`}
+                aria-hidden="true"
             >
                 {cursorCharacter}
             </span>

@@ -11,11 +11,11 @@ const washingMachineImg = 'https://images.unsplash.com/photo-1626806819282-2c1dc
 const transportImg = 'https://images.unsplash.com/photo-1586191582116-8923d0c619be?auto=format&fit=crop&q=80&w=600';
 
 export const categories = [
-    { id: 'carpentry', name: 'Carpentry', icon: 'Hammer', color: 'bg-orange-100 text-orange-600', image: carpentryImg },
-    { id: 'electrical', name: 'Electrical', icon: 'Zap', color: 'bg-yellow-100 text-yellow-600', image: electricalImg },
-    { id: 'homeappliance', name: 'Home Appliance', icon: 'Refrigerator', color: 'bg-blue-100 text-blue-600', image: washingMachineImg }, // Using washing machine as generic home appliance
-    { id: 'plumber', name: 'Plumber', icon: 'Droplets', color: 'bg-cyan-100 text-cyan-600', image: plumbingImg },
-    { id: 'transport', name: 'Transport', icon: 'Truck', color: 'bg-green-100 text-green-600', image: transportImg },
+    { id: 'carpentry', name: 'Carpentry', icon: 'Hammer', color: 'bg-orange-100 text-orange-600', description: 'Expert furniture crafting, repairs, and custom woodwork solutions.', image: carpentryImg },
+    { id: 'electrical', name: 'Electrical', icon: 'Zap', color: 'bg-yellow-100 text-yellow-600', description: 'Safe and reliable electrical repairs, installations, and maintenance.', image: electricalImg },
+    { id: 'homeappliance', name: 'Home Appliance', icon: 'Refrigerator', color: 'bg-blue-100 text-blue-600', description: 'Professional repair and servicing for all your home appliances.', image: washingMachineImg }, // Using washing machine as generic home appliance
+    { id: 'plumber', name: 'Plumber', icon: 'Droplets', color: 'bg-cyan-100 text-cyan-600', description: 'Fast and efficient plumbing solutions for leaks and installations.', image: plumbingImg },
+    { id: 'transport', name: 'Transport', icon: 'Truck', color: 'bg-green-100 text-green-600', description: 'Secure and timely transport services for shifting or delivery.', image: transportImg },
 ];
 
 export const services = [
