@@ -17,6 +17,9 @@ const MobileSearchPage = () => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
+                // Only apply scroll-driven active class on mobile
+                if (window.innerWidth >= 768) return;
+
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         setActiveCardId(Number(entry.target.dataset.id));

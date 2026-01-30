@@ -11,6 +11,9 @@ const MobileBookingsPage = () => {
     // Intersection Observer for Rotating Border
     React.useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
+            // Only apply scroll-driven active class on mobile
+            if (window.innerWidth >= 768) return;
+
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     setActiveBookingId(Number(entry.target.dataset.id));

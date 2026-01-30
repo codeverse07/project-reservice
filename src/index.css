@@ -101,7 +101,8 @@
   transition: opacity 0.3s;
 }
 
-.rotating-border.active::before {
+.rotating-border.active::before,
+.rotating-border:hover::before {
   opacity: 1;
 }
 
