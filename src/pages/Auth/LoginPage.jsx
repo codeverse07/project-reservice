@@ -38,7 +38,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const { login } = useUser();
     const [isLoading, setIsLoading] = useState(false);
-    const [isExistingCustomer, setIsExistingCustomer] = useState(false);
+    const [isExistingCustomer, setIsExistingCustomer] = useState(true);
 
     // Form fields
     const [email, setEmail] = useState('');
@@ -293,7 +293,7 @@ const LoginPage = () => {
                         <div className="w-full max-w-lg relative h-96">
                             {slides.map((slide, index) => (
                                 <div key={index} className="slide-image absolute inset-0 flex flex-col items-center justify-center text-center">
-                                    <div className="relative w-64 h-64 mb-8">
+                                    <div className="relative w-96 h-96 mb-8">
                                         <div className="absolute inset-0 bg-blue-600/30 rounded-3xl blur-3xl animate-pulse"></div>
                                         <img
                                             src={slide.image}
