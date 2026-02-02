@@ -23,4 +23,8 @@ router.post('/logout', authController.logout);
 // Example of how to get current user details
 router.get('/me', authMiddleware.protect, authController.getMe, userController.getUser);
 
+// Google OAuth
+router.get('/google', authController.googleAuth);
+router.get('/google/callback', authController.googleAuthCallback);
+
 module.exports = router;

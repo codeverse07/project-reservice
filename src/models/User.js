@@ -18,9 +18,15 @@ const userSchema = new mongoose.Schema({
             'Please provide a valid email address'
         ]
     },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true,
+        select: false
+    },
     password: {
         type: String,
-        required: [true, 'Please provide a password'],
+        required: [function () { return !this.googleId; }, 'Please provide a password'],
         minlength: 8,
         select: false
     },

@@ -7,11 +7,16 @@ const AppError = require('./utils/AppError');
 const routes = require('./routes/v1');
 const errorHandler = require('./middlewares/errorHandler');
 const { globalLimiter } = require('./middlewares/rateLimit');
+const passport = require('passport');
+require('./config/passport'); // Passport Config
 
 const app = express();
 
 // Security HTTP headers
 app.use(helmet());
+
+// Passport Init
+app.use(passport.initialize());
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {

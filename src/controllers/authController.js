@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const AppError = require('../utils/AppError');
 const { createSendToken } = require('../utils/jwt');
+const passport = require('passport');
 
 exports.register = async (req, res, next) => {
     try {
@@ -60,4 +61,18 @@ exports.logout = (req, res) => {
 exports.getMe = (req, res, next) => {
     req.params.id = req.user.id;
     next();
+};
+
+exports.googleAuth = passport.authenticate('google', {
+    scope: ['profile', 'email']
+});
+
+exports.googleAuthCallback = (req, res, next) => {
+    passport.authenticate('google', { session: false }, (err, user, info) => {
+        if (err) return next(err);
+        if (!user) return next(new AppError('Google Authentication Failed', 401));
+
+        // Successful authentication, issue token
+        createSendToken(user, 200, res);
+    })(req, res, next);
 };
