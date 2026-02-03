@@ -104,23 +104,27 @@ function AnimatedRoutes() {
 
 
 
+import ErrorBoundary from './components/common/ErrorBoundary';
+
 function App() {
   return (
-    <UserProvider>
-      <BookingProvider>
-        <AdminProvider>
-          <TechnicianProvider>
-            <ThemeProvider>
-              <SoundProvider>
-                <Router>
-                  <AnimatedRoutes />
-                </Router>
-              </SoundProvider>
-            </ThemeProvider>
-          </TechnicianProvider>
-        </AdminProvider>
-      </BookingProvider>
-    </UserProvider>
+    <ErrorBoundary>
+      <UserProvider>
+        <BookingProvider>
+          <AdminProvider>
+            <TechnicianProvider>
+              <ThemeProvider>
+                <SoundProvider>
+                  <Router>
+                    <AnimatedRoutes />
+                  </Router>
+                </SoundProvider>
+              </ThemeProvider>
+            </TechnicianProvider>
+          </AdminProvider>
+        </BookingProvider>
+      </UserProvider>
+    </ErrorBoundary>
   );
 }
 
