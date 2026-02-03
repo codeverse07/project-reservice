@@ -20,10 +20,18 @@ const AdminDashboard = () => {
     const [newService, setNewService] = React.useState({ title: '', category: '', price: '', image: '', description: '' });
 
     React.useEffect(() => {
-        if (!isAdminAuthenticated) {
+        if (!isLoading && !isAdminAuthenticated) {
             navigate('/admin/login');
         }
-    }, [isAdminAuthenticated, navigate]);
+    }, [isAdminAuthenticated, isLoading, navigate]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+            </div>
+        );
+    }
 
     if (!isAdminAuthenticated) return null;
 

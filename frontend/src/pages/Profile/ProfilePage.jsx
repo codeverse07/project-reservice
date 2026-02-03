@@ -8,7 +8,7 @@ import { Volume2 } from 'lucide-react';
 import MobileBottomNav from '../../components/mobile/MobileBottomNav';
 
 const ProfilePage = () => {
-  const { user, isAuthenticated, updateProfile, logout, submitFeedback } = useUser();
+  const { user, isAuthenticated, isLoading, updateProfile, logout, submitFeedback } = useUser();
   const { isSoundEnabled, setIsSoundEnabled } = useSound();
   const { appSettings } = useAdmin();
   const navigate = useNavigate();
@@ -24,12 +24,20 @@ const ProfilePage = () => {
   ];
 
   React.useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate('/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
 
-  if (!user) return null; // Wait for redirect
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#050508]">
+        <div className="animate-spin w-8 h-8 border-4 border-rose-600 border-t-transparent rounded-full font-black"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) return null; // Let useEffect handle redirect
 
   const handleEditProfile = () => {
     const newName = prompt('Enter your name:', user.name);

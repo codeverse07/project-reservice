@@ -144,15 +144,23 @@ const SupportWidget = () => (
 const BookingsPage = () => {
     const [activeTab, setActiveTab] = useState('Pending'); // Pending, Assigned, Completed, History
     const { bookings } = useBookings();
-    const { user, isAuthenticated } = useUser();
+    const { user, isAuthenticated, isLoading } = useUser();
     const navigate = useNavigate();
     const containerRef = useRef(null);
 
     React.useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isLoading && !isAuthenticated) {
             navigate('/login');
         }
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated, isLoading, navigate]);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+            </div>
+        );
+    }
 
     if (!user) return null;
 
