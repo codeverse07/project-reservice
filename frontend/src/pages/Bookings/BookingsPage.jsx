@@ -154,25 +154,6 @@ const BookingsPage = () => {
         }
     }, [isAuthenticated, isLoading, navigate]);
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50">
-                <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
-            </div>
-        );
-    }
-
-    if (!user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-slate-50">
-                <div className="text-center">
-                    <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-                    <p className="text-slate-500 font-medium">Redirecting to login...</p>
-                </div>
-            </div>
-        );
-    }
-
     useGSAP(() => {
         gsap.from(".animate-item", {
             y: 30,
@@ -183,102 +164,123 @@ const BookingsPage = () => {
         });
     }, { scope: containerRef });
 
-    const filteredBookings = bookings.filter(b => {
-        if (activeTab === 'History') return ['Completed', 'Canceled'].includes(b.status);
-        if (activeTab === 'Pending') return b.status === 'Pending';
-        if (activeTab === 'Assigned') return b.status === 'Assigned';
-        if (activeTab === 'Completed') return b.status === 'Completed';
-        return true;
-    });
+}, { scope: containerRef });
 
+if (isLoading) {
     return (
-        <>
-            <div className="block md:hidden">
-                <MobileBookingsPage />
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+            <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full"></div>
+        </div>
+    );
+}
+
+if (!user) {
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-50">
+            <div className="text-center">
+                <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-slate-500 font-medium">Redirecting to login...</p>
             </div>
-            <div ref={containerRef} className="hidden md:block relative min-h-screen bg-slate-50 selection:bg-blue-100 overflow-hidden">
-                {/* Background Decorations */}
-                <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px]" />
-                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3" />
-                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-slate-300/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3" />
+        </div>
+    );
+}
 
-                <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-                    {/* Dashboard Header */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10 items-end animate-item">
-                        <div className="lg:col-span-2">
-                            <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                                Welcome, {user.name.split(' ')[0]} <Sparkles className="inline-block w-8 h-8 text-yellow-400 ml-2 fill-yellow-400" />
-                            </h1>
-                            <p className="text-slate-500">Here's the status of your service requests.</p>
-                        </div>
-                        <div className="lg:col-span-1">
-                            <div className="grid grid-cols-2 w-full gap-3 md:flex md:w-auto lg:w-full">
-                                <Button
-                                    variant="outline"
-                                    className={`w-full h-full md:w-auto lg:flex-1 justify-center gap-2 ${activeTab === 'History' ? 'bg-slate-100 border-slate-300' : 'bg-white'}`}
-                                    onClick={() => setActiveTab('History')}
-                                >
-                                    <History className="w-4 h-4" />
-                                    <span>History</span>
-                                </Button>
-                                <Link to="/services" className="w-full h-full md:w-auto lg:flex-1">
-                                    <Button className="w-full h-full md:w-auto md:px-6 lg:w-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30">
-                                        + Book  Service
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
+const filteredBookings = bookings.filter(b => {
+    if (activeTab === 'History') return ['Completed', 'Canceled'].includes(b.status);
+    if (activeTab === 'Pending') return b.status === 'Pending';
+    if (activeTab === 'Assigned') return b.status === 'Assigned';
+    if (activeTab === 'Completed') return b.status === 'Completed';
+    return true;
+});
+
+return (
+    <>
+        <div className="block md:hidden">
+            <MobileBookingsPage />
+        </div>
+        <div ref={containerRef} className="hidden md:block relative min-h-screen bg-slate-50 selection:bg-blue-100 overflow-hidden">
+            {/* Background Decorations */}
+            <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px]" />
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3" />
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-slate-300/20 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3" />
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+                {/* Dashboard Header */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10 items-end animate-item">
+                    <div className="lg:col-span-2">
+                        <h1 className="text-3xl font-bold text-slate-900 mb-2">
+                            Welcome, {user.name.split(' ')[0]} <Sparkles className="inline-block w-8 h-8 text-yellow-400 ml-2 fill-yellow-400" />
+                        </h1>
+                        <p className="text-slate-500">Here's the status of your service requests.</p>
                     </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {/* Main Content Area */}
-                        <div className="lg:col-span-2 space-y-8 animate-item">
-                            {/* Tabs */}
-                            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-                                <div className="flex border-b border-slate-100">
-                                    {['Pending', 'Assigned', 'Completed'].map((tab) => (
-                                        <button
-                                            key={tab}
-                                            onClick={() => setActiveTab(tab)}
-                                            className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab
-                                                ? 'border-blue-600 text-blue-600 bg-blue-50/50'
-                                                : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
-                                                }`}
-                                        >
-                                            {tab}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* List Content */}
-                            <div className="space-y-4">
-                                {filteredBookings.length > 0 ? (
-                                    filteredBookings.map(booking => (
-                                        <BookingCard key={booking.id} booking={booking} />
-                                    ))
-                                ) : (
-                                    <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200">
-                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 mb-4 text-slate-400">
-                                            <Search className="w-6 h-6" />
-                                        </div>
-                                        <h3 className="text-slate-900 font-medium mb-1">No {activeTab.toLowerCase()} requests</h3>
-                                        <p className="text-slate-500 text-sm">You don't have any requests in this category.</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Sidebar Area */}
-                        <div className="space-y-6 animate-item">
-                            <StatsWidget />
-                            <SupportWidget />
+                    <div className="lg:col-span-1">
+                        <div className="grid grid-cols-2 w-full gap-3 md:flex md:w-auto lg:w-full">
+                            <Button
+                                variant="outline"
+                                className={`w-full h-full md:w-auto lg:flex-1 justify-center gap-2 ${activeTab === 'History' ? 'bg-slate-100 border-slate-300' : 'bg-white'}`}
+                                onClick={() => setActiveTab('History')}
+                            >
+                                <History className="w-4 h-4" />
+                                <span>History</span>
+                            </Button>
+                            <Link to="/services" className="w-full h-full md:w-auto lg:flex-1">
+                                <Button className="w-full h-full md:w-auto md:px-6 lg:w-full shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30">
+                                    + Book  Service
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Content Area */}
+                    <div className="lg:col-span-2 space-y-8 animate-item">
+                        {/* Tabs */}
+                        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                            <div className="flex border-b border-slate-100">
+                                {['Pending', 'Assigned', 'Completed'].map((tab) => (
+                                    <button
+                                        key={tab}
+                                        onClick={() => setActiveTab(tab)}
+                                        className={`flex-1 py-4 text-sm font-medium border-b-2 transition-colors ${activeTab === tab
+                                            ? 'border-blue-600 text-blue-600 bg-blue-50/50'
+                                            : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50'
+                                            }`}
+                                    >
+                                        {tab}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* List Content */}
+                        <div className="space-y-4">
+                            {filteredBookings.length > 0 ? (
+                                filteredBookings.map(booking => (
+                                    <BookingCard key={booking.id} booking={booking} />
+                                ))
+                            ) : (
+                                <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-slate-200">
+                                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 mb-4 text-slate-400">
+                                        <Search className="w-6 h-6" />
+                                    </div>
+                                    <h3 className="text-slate-900 font-medium mb-1">No {activeTab.toLowerCase()} requests</h3>
+                                    <p className="text-slate-500 text-sm">You don't have any requests in this category.</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Sidebar Area */}
+                    <div className="space-y-6 animate-item">
+                        <StatsWidget />
+                        <SupportWidget />
+                    </div>
+                </div>
             </div>
-        </>
-    );
+        </div>
+    </>
+);
 };
 
 export default BookingsPage;
