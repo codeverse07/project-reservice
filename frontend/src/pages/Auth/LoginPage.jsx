@@ -158,7 +158,7 @@ const LoginPage = () => {
                     </div>
 
                     {/* Mode Toggle */}
-                    <div className="flex bg-slate-100 p-1 rounded-xl mb-6 stagger-item">
+                    <div className="flex bg-slate-100 p-1 rounded-xl mb-4 stagger-item">
                         <button
                             onClick={() => setIsExistingCustomer(false)}
                             className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!isExistingCustomer ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500'}`}
@@ -172,6 +172,17 @@ const LoginPage = () => {
                             Existing Customer
                         </button>
                     </div>
+
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-[10px] font-bold stagger-item">
+                            <p>{error}</p>
+                            {(error.includes('Network Error') || error.includes('503')) && (
+                                <p className="mt-2 text-blue-600 font-medium">
+                                    TIP: Visit <a href="https://reservice-backend-v4.loca.lt" target="_blank" rel="noreferrer" className="underline">Backend Link</a> and click "Continue" to fix this.
+                                </p>
+                            )}
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-4 stagger-item">
                         {!isExistingCustomer && (

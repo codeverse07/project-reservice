@@ -42,9 +42,14 @@ const AdminLoginPage = () => {
                         <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-900/30 rounded-2xl text-red-600 dark:text-red-400 text-xs font-bold text-center"
+                            className="p-4 bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-900/30 rounded-2xl text-red-600 dark:text-red-400 text-xs font-bold text-center space-y-2"
                         >
-                            {error}
+                            <p>{error}</p>
+                            {error.includes('Network Error') || error.includes('503') ? (
+                                <p className="text-[10px] mt-2 text-indigo-600 dark:text-indigo-400 font-medium">
+                                    TIP: Please visit <a href="https://reservice-backend-v4.loca.lt" target="_blank" rel="noreferrer" className="underline font-bold">this link</a> and click "Click to Continue" to enable the connection.
+                                </p>
+                            ) : null}
                         </motion.div>
                     )}
 
