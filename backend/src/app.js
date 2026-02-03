@@ -14,6 +14,9 @@ const app = express();
 app.use(helmet());
 app.use(require('compression')());
 
+// Trust Proxy for Render (Required for Secure Cookies)
+app.enable('trust proxy');
+
 // Development logging
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
