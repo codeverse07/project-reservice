@@ -23,7 +23,7 @@ const BookingModal = ({ isOpen, onClose, service, onConfirm }) => {
     });
 
     // Sub-services from Service object (provided by AdminContext transform)
-    const plans = service?.subServices || [
+    const plans = (service?.subServices && service.subServices.length > 0) ? service.subServices : [
         { id: 'basic', name: "Basic Service", price: service?.price || 499, description: "Includes diagnosis and minor repairs.", isActive: true },
         { id: 'premium', name: "Premium Service", price: Math.round((service?.price || 499) * 2), description: "Deep cleaning + parts check + 30 day warranty.", isActive: true },
         { id: 'consultation', name: "Consultation", price: 199, description: "Expert visit and cost estimation.", isActive: true },
