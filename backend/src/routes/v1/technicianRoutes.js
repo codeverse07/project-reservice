@@ -42,6 +42,20 @@ router.post(
     technicianController.createProfile
 );
 
+router.patch(
+    '/profile',
+    authMiddleware.restrictTo('TECHNICIAN'),
+    upload.fields([
+        { name: 'profilePhoto', maxCount: 1 },
+        { name: 'aadharCard', maxCount: 1 },
+        { name: 'panCard', maxCount: 1 },
+        { name: 'drivingLicense', maxCount: 1 },
+        { name: 'certificates', maxCount: 5 }
+    ]),
+    // validate(technicianValidation.updateProfile), // Optional: Add validation
+    technicianController.updateProfile
+);
+
 router.post(
     '/subscribe',
     authMiddleware.restrictTo('TECHNICIAN'),

@@ -42,7 +42,13 @@ const TechnicianDashboard = () => {
       </div>
     );
 
+  const handleLogout = () => {
+    console.log("Sign Out Clicked");
+    logout();
+  };
+
   const toggleStatus = (checked) => {
+    console.log("Toggle Status Clicked:", checked);
     updateStatus(checked);
   };
 
@@ -148,7 +154,7 @@ const TechnicianDashboard = () => {
             </div>
           </div>
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="w-full text-left px-4 py-2 text-red-500 text-sm font-bold hover:bg-red-50 rounded-lg transition-colors"
           >
             Sign Out
@@ -369,8 +375,8 @@ const TechnicianDashboard = () => {
                         </div>
                       </div>
                       <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded-full border ${booking.status === 'IN_PROGRESS'
-                          ? 'bg-blue-50 text-blue-600 border-blue-100'
-                          : 'bg-green-50 text-green-600 border-green-100'
+                        ? 'bg-blue-50 text-blue-600 border-blue-100'
+                        : 'bg-green-50 text-green-600 border-green-100'
                         }`}>
                         {booking.status.replace('_', ' ')}
                       </span>
