@@ -109,9 +109,12 @@ const MobileServiceDetail = ({ serviceId, onClose }) => {
                                 <span className="text-sm font-black">{service.rating}</span>
                             </div>
                         </div>
-                        <p className="text-slate-500 dark:text-slate-400 font-bold leading-relaxed">
-                            {service.description}
-                        </p>
+                        <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800">
+                            <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest mb-2">About This Service</h3>
+                            <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed text-sm">
+                                {service.description}
+                            </p>
+                        </div>
                     </div>
 
                     {service.isComingSoon && (

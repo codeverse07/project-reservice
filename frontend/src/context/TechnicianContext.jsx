@@ -14,31 +14,50 @@ export const TechnicianProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [jobs, setJobs] = useState([]);
 
-    // Fetch Technician Profile if user is a TECHNICIAN
-    useEffect(() => {
-        const fetchTechnicianData = async () => {
-            if (isAuthenticated && user?.role === 'TECHNICIAN') {
-                try {
-                    setLoading(true);
-                    // Fetch technician profile by User ID (Backend allows filtering by user field)
-                    const res = await client.get(`/technicians?user=${user._id}`);
-
-                    if (res.data.status === 'success' && res.data.data.technicians.length > 0) {
-                        setTechnicianProfile(res.data.data.technicians[0]);
-                    } else {
-                        // Profile doesn't exist yet (New registered technician)
-                        setTechnicianProfile(null);
-                    }
-                } catch (error) {
-                    console.error("Error fetching technician data", error);
-                } finally {
-                    setLoading(false);
+    // Fetch Technician Data (Profile, Stats, Jobs)
+    const fetchTechnicianData = async () => {
+        if (isAuthenticated && user?.role === 'TECHNICIAN') {
+            try {
+                setLoading(true);
+                // 1. Fetch Profile
+                const profileRes = await client.get(`/technicians?user=${user._id}`);
+                if (profileRes.data.status === 'success' && profileRes.data.data.technicians.length > 0) {
+                    setTechnicianProfile(profileRes.data.data.technicians[0]);
+                } else {
+                    setTechnicianProfile(null);
                 }
-            } else {
+
+                // 2. Fetch Stats
+                try {
+                    const statsRes = await client.get('/bookings/stats');
+                    if (statsRes.data.status === 'success') {
+                        setStats(statsRes.data.data.stats);
+                    }
+                } catch (statsErr) {
+                    console.error("Error fetching stats:", statsErr);
+                }
+
+                // 3. Fetch Jobs (Bookings)
+                try {
+                    const bookingsRes = await client.get('/bookings');
+                    if (bookingsRes.data.status === 'success') {
+                        setJobs(bookingsRes.data.data.bookings);
+                    }
+                } catch (jobsErr) {
+                    console.error("Error fetching jobs:", jobsErr);
+                }
+
+            } catch (error) {
+                console.error("Error fetching technician data", error);
+            } finally {
                 setLoading(false);
             }
-        };
+        } else {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchTechnicianData();
     }, [isAuthenticated, user]);
 
@@ -99,6 +118,18 @@ export const TechnicianProvider = ({ children }) => {
         }
     };
 
+    const updateJobStatus = async (bookingId, status) => {
+        try {
+            await client.patch(`/bookings/${bookingId}/status`, { status });
+            toast.success(`Job marked as ${status}`);
+            // Refresh data
+            fetchTechnicianData();
+        } catch (error) {
+            console.error(error);
+            toast.error(error.response?.data?.message || "Failed to update status");
+        }
+    };
+
     const subscribeToPush = async () => {
         if ('serviceWorker' in navigator) {
             try {
@@ -118,11 +149,14 @@ export const TechnicianProvider = ({ children }) => {
 
     const value = {
         technicianProfile,
+        stats,
+        jobs,
         loading,
         createProfile,
         updateStatus,
+        updateJobStatus,
         subscribeToPush,
-        jobs
+        refreshTechnicianData: fetchTechnicianData
     };
 
     return <TechnicianContext.Provider value={value}>{children}</TechnicianContext.Provider>;

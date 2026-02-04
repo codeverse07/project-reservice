@@ -25,7 +25,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const TechnicianDashboard = () => {
   const { logout, user } = useUser();
-  const { technicianProfile, updateStatus, loading, subscribeToPush } = useTechnician();
+  const { technicianProfile, stats, jobs, updateStatus, updateJobStatus, loading, subscribeToPush } = useTechnician();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -207,18 +207,18 @@ const TechnicianDashboard = () => {
                     Today's Earnings
                   </p>
                   <h3 className="text-2xl font-black text-slate-900 ">
-                    ₹2,400
+                    ₹{stats?.totalEarnings || 0}
                   </h3>
                   <span className="text-xs font-bold text-green-500 flex items-center mt-2">
-                    <TrendingUpIcon /> +12% from yesterday
+                    <TrendingUpIcon /> Lifetime
                   </span>
                 </div>
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
                   <p className="text-slate-500 text-xs font-bold uppercase mb-1">
-                    Total Jobs
+                    Completed Jobs
                   </p>
                   <h3 className="text-2xl font-black text-slate-900">
-                    {technicianProfile?.totalJobs || 0}
+                    {stats?.completedJobs || 0}
                   </h3>
                 </div>
                 <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
@@ -226,8 +226,7 @@ const TechnicianDashboard = () => {
                     Rating
                   </p>
                   <h3 className="text-2xl font-black text-slate-900 flex items-center gap-1">
-                    {technicianProfile?.avgRating || 0}{" "}
-                    <span className="text-yellow-400 text-lg">★</span>
+                    {technicianProfile?.avgRating || 0} <span className="text-yellow-400 text-lg">★</span>
                   </h3>
                 </div>
                 <div className="bg-blue-600 p-6 rounded-3xl md:flex flex-col justify-between hidden text-white relative overflow-hidden">
@@ -296,36 +295,56 @@ const TechnicianDashboard = () => {
                 <h3 className="text-lg font-bold text-slate-900 mb-4">
                   New Requests
                 </h3>
-                {technicianProfile?.isOnline ? (
-                  <div className="bg-white rounded-2xl p-8 text-center border border-dashed border-slate-300">
-                    <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                      {technicianProfile?.skills?.some((s) =>
-                        s.toLowerCase().includes("driver")
-                      ) ? (
-                        <Navigation className="w-8 h-8 text-blue-500" />
-                      ) : (
-                        <Bell className="w-8 h-8 text-blue-500" />
-                      )}
-                    </div>
-                    <h4 className="text-lg font-bold text-slate-900 mb-1">
-                      {technicianProfile?.skills?.some((s) =>
-                        s.toLowerCase().includes("driver")
-                      )
-                        ? "Searching for rides nearby..."
-                        : "Searching for jobs nearby..."}
-                    </h4>
-                    <p className="text-slate-500">
-                      {technicianProfile?.skills?.some((s) =>
-                        s.toLowerCase().includes("driver")
-                      )
-                        ? "Keep the app open to receive new ride requests from customers."
-                        : "We'll notify you when a customer requests a service matching your skills."}
-                    </p>
+                {jobs.filter(j => j.status === 'PENDING').length > 0 ? (
+                  <div className="space-y-4">
+                    {jobs.filter(j => j.status === 'PENDING').map(booking => (
+                      <div key={booking._id} className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h4 className="font-bold text-lg text-slate-900">{booking.service.title}</h4>
+                            <p className="text-slate-500 text-sm">₹{booking.price}</p>
+                          </div>
+                          <span className="px-2 py-1 bg-amber-50 text-amber-600 text-[10px] font-bold uppercase rounded-full border border-amber-100">
+                            Pending
+                          </span>
+                        </div>
+
+                        <div className="flex gap-2 mb-4">
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <Clock className="w-3.5 h-3.5" />
+                            {new Date(booking.scheduledAt).toLocaleString()}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <MapPin className="w-3.5 h-3.5" />
+                            {booking.customer?.location?.address || "Location not provided"}
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3 mt-4">
+                          <button
+                            onClick={() => updateJobStatus(booking._id, 'ACCEPTED')}
+                            className="flex-1 py-2.5 bg-blue-600 text-white font-bold rounded-xl text-sm hover:bg-blue-700 transition-colors">
+                            Accept Job
+                          </button>
+                          <button
+                            onClick={() => updateJobStatus(booking._id, 'REJECTED')}
+                            className="flex-1 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl text-sm hover:bg-slate-200 transition-colors">
+                            Reject
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ) : (
-                  <div className="bg-slate-100 rounded-2xl p-8 text-center">
-                    <p className="font-bold text-slate-500">
-                      You are offline. Go online to see requests.
+                  <div className="bg-white rounded-2xl p-8 text-center border border-dashed border-slate-300">
+                    <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                      <Bell className="w-8 h-8 text-blue-500" />
+                    </div>
+                    <h4 className="text-lg font-bold text-slate-900 mb-1">
+                      No new requests
+                    </h4>
+                    <p className="text-slate-500">
+                      We'll notify you when a customer requests a service matching your skills.
                     </p>
                   </div>
                 )}
@@ -334,12 +353,86 @@ const TechnicianDashboard = () => {
           )}
 
           {activeTab === "jobs" && (
-            <div className="bg-white rounded-3xl p-8 min-h-[400px] flex flex-col items-center justify-center text-center">
-              <ClipboardList className="w-16 h-16 text-slate-300 mb-4" />
-              <h3 className="text-xl font-bold text-slate-700">No active jobs</h3>
-              <p className="text-slate-500">
-                Your accepted bookings will appear here.
-              </p>
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-slate-900 mb-4">Active Jobs</h3>
+              {jobs.filter(j => ['ACCEPTED', 'IN_PROGRESS'].includes(j.status)).length > 0 ? (
+                jobs.filter(j => ['ACCEPTED', 'IN_PROGRESS'].includes(j.status)).map(booking => (
+                  <div key={booking._id} className="bg-white p-6 rounded-2xl border border-blue-100 shadow-sm">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h4 className="font-bold text-lg text-slate-900">{booking.service.title}</h4>
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className="w-6 h-6 rounded-full bg-slate-100 overflow-hidden">
+                            <img src={`http://localhost:5000/public/img/users/${booking.customer?.profilePhoto || 'default.jpg'}`} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <span className="text-sm font-bold text-slate-700">{booking.customer?.name}</span>
+                        </div>
+                      </div>
+                      <span className={`px-2 py-1 text-[10px] font-bold uppercase rounded-full border ${booking.status === 'IN_PROGRESS'
+                          ? 'bg-blue-50 text-blue-600 border-blue-100'
+                          : 'bg-green-50 text-green-600 border-green-100'
+                        }`}>
+                        {booking.status.replace('_', ' ')}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 mb-6">
+                      <div className="flex items-center gap-3 text-sm text-slate-600">
+                        <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
+                          <Clock className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-400 font-bold uppercase">Scheduled For</p>
+                          <p className="font-bold">{new Date(booking.scheduledAt).toLocaleString()}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 text-sm text-slate-600">
+                        <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
+                          <MapPin className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-400 font-bold uppercase">Address</p>
+                          <p className="font-bold">{booking.customer?.location?.address || booking.customer?.address || "Location not provided"}</p>
+                        </div>
+                      </div>
+                      {booking.notes && (
+                        <div className="flex items-center gap-3 text-sm text-slate-600">
+                          <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
+                            <FileText className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-400 font-bold uppercase">Notes</p>
+                            <p className="font-medium italic">"{booking.notes}"</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {booking.status === 'ACCEPTED' && (
+                      <button
+                        onClick={() => updateJobStatus(booking._id, 'IN_PROGRESS')}
+                        className="w-full py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">
+                        Start Job
+                      </button>
+                    )}
+                    {booking.status === 'IN_PROGRESS' && (
+                      <button
+                        onClick={() => updateJobStatus(booking._id, 'COMPLETED')}
+                        className="w-full py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition-colors">
+                        Mark as Completed
+                      </button>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white rounded-3xl p-8 min-h-[400px] flex flex-col items-center justify-center text-center">
+                  <ClipboardList className="w-16 h-16 text-slate-300 mb-4" />
+                  <h3 className="text-xl font-bold text-slate-700">No active jobs</h3>
+                  <p className="text-slate-500">
+                    Your accepted bookings will appear here.
+                  </p>
+                </div>
+              )}
             </div>
           )}
 

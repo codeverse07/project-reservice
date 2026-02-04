@@ -8,6 +8,7 @@ import { useAdmin } from '../../context/AdminContext';
 import ServiceCard from '../../components/common/ServiceCard';
 import ServiceStack from '../../components/home/ServiceStack';
 import Button from '../../components/common/Button';
+import ServicePlans from '../../components/home/ServicePlans';
 import Particles from '../../react-bit/Particle';
 import BookingModal from '../../components/bookings/BookingModal';
 import { useBookings } from '../../context/BookingContext';
@@ -428,6 +429,9 @@ const HomePage = () => {
               ))}
             </div>
           </section>
+
+          {/* Service Plans Section */}
+          <ServicePlans />
 
           {/* Promotional Banner */}
           <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full animate-item">

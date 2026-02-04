@@ -47,7 +47,7 @@ const ServiceCard = ({ service, onBook, onDetails, isActive }) => {
                     <h3 className="font-extrabold text-xl text-slate-900 dark:text-white mb-2 line-clamp-2 md:line-clamp-1 group-hover:text-rose-600 md:group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
                         {service.title}
                     </h3>
-                    <p className="hidden md:block text-slate-500 dark:text-slate-400 text-sm line-clamp-2 leading-relaxed">
+                    <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 leading-relaxed mt-1">
                         {service.description}
                     </p>
                 </div>

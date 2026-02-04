@@ -66,7 +66,7 @@ export const services = [
         reviews: 124,
         price: 499,
         image: carpentryImg,
-        description: 'Furniture repair, assembly, and custom woodwork. Professional carpenters.',
+        description: 'Furniture repair, assembly, and custom woodwork. We handle everything from minor fixes to major installations.',
         isActive: true,
     },
     {
@@ -77,7 +77,7 @@ export const services = [
         reviews: 89,
         price: 399,
         image: washingMachineImg,
-        description: 'Diagnosis and repair of all washing machine brands (LG, Samsung, IFB, etc).',
+        description: 'Diagnosis and repair of all washing machine brands. We fix drum issues, water leakage, and electronic failures.',
         isActive: true,
     },
     {
@@ -88,7 +88,7 @@ export const services = [
         reviews: 215,
         price: 599,
         image: plumbingImg,
-        description: 'Leak repair, pipe fitting, and bathroom general plumbing.',
+        description: 'Leak repair, pipe fitting, and bathroom plumbing. Fast resolution for clogged drains and water pressure issues.',
         isActive: true,
     },
     {
@@ -99,7 +99,7 @@ export const services = [
         reviews: 56,
         price: 199,
         image: electricalImg,
-        description: 'Fan repair, light installation, socket replacement, and more.',
+        description: 'Fan repair, light installation, and socket replacement. Certified electricians for safe and reliable wiring work.',
         isActive: true,
     },
     {
